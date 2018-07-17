@@ -1,0 +1,5 @@
+__pycache__
+*.pyc
+error.log
+/.idea/
+/.mypy_cache/
