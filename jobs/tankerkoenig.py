@@ -25,11 +25,11 @@ def execute(api_key : str, lat: float, lng : float, rad: float) -> typing.Iterab
             if not station['isOpen'] == True:
                 continue
 
-            if "diesel" in station:
+            if "diesel" in station and station['diesel'] is not None:
                 yield Data(name, station['id'], 'Diesel', station['diesel'])
-            if "e5" in station:
+            if "e5" in station and station['e5'] is not None:
                 yield Data(name, station['id'], 'SP95-E5', station['e5'])
-            if "e10" in station:
+            if "e10" in station and station['e10'] is not None:
                 yield Data(name, station['id'], 'SP95-E10', station['e10'])
     except Exception as e:
         logging.error("Failed for: %f %f %f", lat, lng, rad)
