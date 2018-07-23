@@ -34,3 +34,16 @@ def execute(api_key : str, lat: float, lng : float, rad: float) -> typing.Iterab
     except Exception as e:
         logging.error("Failed for: %f %f %f", lat, lng, rad)
         raise e
+
+
+if __name__ == '__main__':
+    import argparse
+    import pprint
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--api-key", nargs=1, default='00000000-0000-0000-0000-000000000002', required=True)
+    args = parser.parse_args()
+    api_key = args.api_key[0]
+
+    print(api_key)
+    data = execute(api_key, 48.651822, 7.927891, 15.0)
+    pprint.pprint(list(data))
