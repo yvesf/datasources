@@ -45,11 +45,11 @@ def execute(curr_from, curr_to):
         if not match:
             raise Exception("Invalid response in 'result' field")
         result = Decimal(match.groups()[0]) / MULT
-        return Quote(curr_to, curr_to, float(result))
+        return Quote(curr_from, curr_to, float(result))
 
 
 if __name__ == "__main__":
     from pprint import pprint
 
+    pprint(execute("EUR", "CHF"))
     pprint(execute("CHF", "EUR"))
-    pprint(execute("CHF", "GBP"))
