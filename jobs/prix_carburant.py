@@ -6,6 +6,8 @@ from html.parser import HTMLParser
 from urllib import request
 
 
+rupture = 'Rupture de stock'
+
 class Station:
     def __init__(self):
         self.station_name = ""
@@ -14,6 +16,7 @@ class Station:
 
     def clean(self):
         self.prices = filter(lambda kv: kv[1] != '', self.prices.items())
+        self.prices = filter(lambda kv: kv[1] != rupture, self.prices)
         self.prices = dict(map(lambda kv: (kv[0], float(kv[1])), self.prices))
 
     def __repr__(self):
