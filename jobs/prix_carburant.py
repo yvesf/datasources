@@ -72,18 +72,17 @@ class Parser(HTMLParser):
                 self._prix.station_name += data.strip() + ". "
 
 
-URL = "http://www.prix-carburants.gouv.fr/map/recupererInfosPdv/"
+URL = "https://www.prix-carburants.gouv.fr/map/recupererInfosPdv/"
 
 
 def _execute(station_id: str):
     parser = Parser()
-    r = request.Request(URL + station_id)
-    r.add_header('Host', 'www.prix-carburants.gouv.fr')
-    r.add_header('Referer', 'http://www.prix-carburants.gouv.fr/recherche/map')
-    r.add_header('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:30.0) Gecko/20100101 Firefox/30.0')
+    r = request.Request(URL + station_id, data=b"")
+    r.add_header('User-Agent', 'Mozilla/5.0 (X11; Linux x86_64; rv:64.0) Gecko/20100101 Firefox/64.0')
     r.add_header('X-Requested-With', 'XMLHttpRequest')
     r.add_header('X-Prototype-Version', '1.7')
-    r.add_header('Connection', 'close')
+    r.add_header('Connection', 'keep-alive')
+    r.add_header('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8')
     with request.urlopen(r) as f:
         # with open("info.html", 'rb') as f:
         f2 = codecs.getreader('utf-8')(f)
@@ -101,7 +100,10 @@ def _execute(station_id: str):
 
 def execute(*ids) -> typing.Iterable[Station]:
     for station_id in ids:
-        yield _execute(station_id)
+        try:
+            yield _execute(station_id)
+        except Exception as e:
+            raise Exception("Failed for station {}".format(station_id), e)
 
 
 if __name__ == "__main__":
